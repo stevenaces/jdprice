@@ -1,0 +1,12 @@
+[
+<QuerySet [<ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo））>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>]>,
+<QuerySet [<ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）> <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>]>,
+<QuerySet [<ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>, <ProductsInfo: 联想（Lenovo）>]>
+]
+[
+'联想(Lenovo)拯救者Y7000P英特尔酷睿i715.6英寸高色域游戏笔记本电脑(i7-8750H8G512GGTX1060144Hz)',
+'联想(Lenovo)拯救者Y7000P第八代英特尔酷睿i715.6英寸游戏笔记本电脑(i7-8750H8G512GGTX1060144Hz黑)',
+'',
+'联想(Lenovo)拯救者Y7000P15.6英寸东战队纪念款)',
+'联想(Lenovo)拯救者Y7000P英特尔酷睿i515.6英寸高色域游戏笔记本电脑(i58G512GPCIEGTX1050Ti144Hz黑)',
+'联想(Lenovo)拯救者Y7000P英特尔酷睿i515.6英寸高色域游戏笔记本电脑(i58G512GSSDGTX1060144Hz)']

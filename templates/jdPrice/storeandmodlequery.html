@@ -1,0 +1,112 @@
+{% extends "./base.html" %}
+{% block content %}
+    <h1 class="text-center">店铺加商品型号查询</h1>
+    <div class="container">
+        <form action="/jdPrice/smquery/" method="post">
+            <div class="form-group">
+                <label for="InputEmail">请输入查询商品所在店铺</label>
+                <input name="store" class="form-control " id="InputId" placeholder="仅输入一个店铺">
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">请输入查询商品认证型号</label>
+                <input name="productmodle" class="form-control " id="InputId" placeholder="仅输入一个型号">
+            </div>
+            <button type="submit" class="btn btn-default">查询</button>
+            {% csrf_token %}
+        </form>
+    </div>
+    <div id="main" style="height:400px"></div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        // 接收商品数据
+        var a = 1;
+        console.log(a);
+        var brands = {{ brands|safe }};
+        var product_price_list = {{ price_list|safe }};
+        var product_crawltime_list = {{ crawl_time|safe }};
+        console.log(brands);
+        console.log(product_price_list);
+        console.log(product_crawltime_list);
+
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/line' // 使用柱状图就加载line模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+                option = {
+                    title: {
+                        text: '商品价格信息',
+                        subtext: '商品数据来源: 京东'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: brands
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    dataZoom: {
+                        show: true,
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: product_crawltime_list
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '¥ {value}'
+                            }
+                        }
+                    ],
+
+                };
+                let series = product_price_list.map((e, i) => ({
+                    name: brands[i],
+                    type: 'bar',
+                    data: e,
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }));
+                Object.assign(option, {series});
+                myChart.setOption(option);
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    </script>
+{% endblock %}

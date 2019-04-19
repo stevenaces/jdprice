@@ -1,0 +1,108 @@
+{% extends "./base.html" %}
+{% block content %}
+    <h1 class="text-center">通过商品 ID 查询</h1>
+    <div class="container">
+        <form action="/jdPrice/queryid/" method="post">
+            <div class="form-group">
+                <label for="exampleInputEmail1">请输入查询的商品ID</label>
+                <input name="inputid" class="form-control " id="InputId" placeholder="please input product id">
+            </div>
+            <button type="submit" class="btn btn-default">查询</button>
+            {% csrf_token %}
+        </form>
+    </div>
+    <div id="main" style="height:400px"></div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        // 接收商品数据
+        var a = 1;
+        console.log(a);
+        var product_price_list = {{ price|safe }};
+        var product_crawltime_list = {{ crawl_time|safe }};
+        console.log(product_price_list);
+        console.log(product_crawltime_list);
+
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/line' // 使用柱状图就加载line模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    title: {
+                        text: '商品价格图',
+                        subtext: '商品数据来源: 京东',
+                        //borderColor: '#54d6ff',
+                        //borderWidth: 4
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data: ['价格']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    dataZoom: {
+                        show: true,
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: product_crawltime_list
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '¥ {value}'
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            "name": "价格",
+                            "type": "bar",
+                            "data": product_price_list,
+                            "markPoint": {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            "markLine": {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    </script>
+{% endblock %}
