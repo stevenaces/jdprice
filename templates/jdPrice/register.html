@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>注册</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -10,24 +11,45 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+    <style>
+        .error:focus {
+            box-shadow: inset 0 1px 1px red, 0 0 8px red;
+            border: red;
+        }
+    </style>
 </head>
 <body>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="gridSystemModalLabel">错误信息</h4>
+      </div>
+      <div class="modal-body">
+       {{ errors }}
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <h1 class="text-center">注册-Register</h1>
 <div class="container">
     <form action="/jdPrice/register/" method="post">
         <div class="row">
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
-                <label for="exampleInputEmail1">用户名</label>
-                <input name="username" class="form-control" placeholder="Username">
+                <label for="exampleInputEmail1">用户名<span id="tipMessage1"
+                                                         style="display: inline-block; color: red; visibility:hidden;">【用户名已存在,请修改】</span></label>
+                <input name="username" id="id_username" class="form-control" placeholder="Username">
+
             </div>
             <div class="form-group col-md-4"></div>
         </div>
         <div class="row">
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
-                <label for="exampleInputPassword1">密码</label>
-                <input type="password" name="password" class="form-control" id="InputPassword2"
+                <label for="exampleInputPassword1">密码<span id="tipMessage2"
+                                                           style="display: inline-block; color: red; visibility:hidden;">【两次密码不相同，请重新输入】</span></label>
+                <input type="password" name="password" class="form-control" id="InputPassword1"
                        placeholder="Password">
             </div>
             <div class="form-group col-md-4"></div>
@@ -36,7 +58,7 @@
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
                 <label for="exampleInputPassword1">确认密码</label>
-                <input type="password" name="confirm-password" class="form-control" id="InputPassword3"
+                <input type="password" name="confirm-password" class="form-control" id="InputPassword2"
                        placeholder="Password">
             </div>
             <div class="form-group col-md-4"></div>
@@ -44,12 +66,59 @@
         <div class="row">
             <div class="form-group col-md-4"></div>
             <div class="form-group col-md-4">
-                <button type="submit" class="btn btn-default">Submit</button>
+                <label for="emailInput">输入邮箱</label>
+                <div class="input-group">
+                    <input type="text" name="email" class="form-control" placeholder="Input you E-mail"
+                           aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                </div>
+            </div>
+            <div class="form-group col-md-4"></div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4"></div>
+            <div class="form-group col-md-4">
+                <button type="button" id="submit_button" class="btn btn-default">Submit</button>
             </div>
             <div class="form-group col-md-4"></div>
         </div>
         {% csrf_token %}
     </form>
 </div>
+<script>
+    console.log($('input[type=hidden]').val())
+    var flag = 0;
+    $('#id_username').on('input', function A() {
+        A.timer && clearTimeout(A.timer)
+        A.timer = setTimeout(() => {
+            $.post('/jdPrice/check/', {username: this.value, csrfmiddlewaretoken: $('input[type=hidden]').val()})
+                .then(function (is_unique) {
+                    console.log(typeof is_unique)
+                    if (+is_unique) {
+                        $('#id_username').addClass('error')
+                        $('#tipMessage1').css('visibility', 'visible')
+                    } else {
+                        $('#id_username').removeClass('error')
+                        $('#tipMessage1').css('visibility', 'hidden')
+                        flag = 1
+                    }
+                }, () => {
+
+                }, 1000)
+        })
+    });
+    var error_message = '{{ errors }}'
+    console.log(error_message)
+    if (error_message) {
+        $('#modal').modal('show')
+    }
+    $('#submit_button').on('click', function (e) {
+        e.preventDefault()
+        if (flag) {
+            $('form').submit()
+        }
+    })
+
+</script>
 </body>
 </html>

@@ -25,4 +25,24 @@ class ProductsInfo(models.Model):
         verbose_name_plural = verbose_name
 
 
+class UserInfo(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user_name = models.CharField(max_length=20)
+    passwd = models.CharField(max_length=100)
+    passwd_encode = models.Field()
+    email = models.Field(blank=True, null=True)
+    create_time = models.DateTimeField()
+    update_time = models.DateTimeField()
+    status = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user_name
+
+    class Meta:
+        managed = False
+        db_table = 'users_info'
+        verbose_name = 'Django用户账号信息'
+        verbose_name_plural = verbose_name
+
+
 
